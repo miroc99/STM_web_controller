@@ -1,0 +1,27 @@
+@import "bootstrap/scss/bootstrap";
+body {
+	// background: linear-gradient(to bottom, rgb(64, 64, 64), rgb(128, 128, 128));
+	background: #212529;
+	min-height: 100vh;
+}
+// #requestPortBtn {
+// 	background-color: pink;
+// 	border-color: pink;
+// 	&:hover {
+// 		background-color: darken(pink, 10%);
+// 		border-color: darken(pink, 10%);
+// 	}
+// }
+
+// body {
+// 	background-color: rgb(220, 184, 121);
+// }
+
+#serialTerminal {
+	background-color: #000;
+	color: #00ff00;
+	font-family: monospace;
+	font-size: 14px;
+	white-space: pre-wrap;
+	overflow-y: auto;
+}

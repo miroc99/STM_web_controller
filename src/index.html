@@ -1,0 +1,228 @@
+<!-- <img
+            src="/assets/STM17_CONN_SPL.png"
+            alt="STM17_CONN_SPL"
+            class="rounded"
+          /> -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Motor Control</title>
+    <script
+      src="https://kit.fontawesome.com/e28865f407.js"
+      crossorigin="anonymous"
+    ></script>
+    <script type="module" src="/js/main.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-white">STM Motor Controller</h1>
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <img
+              src="/assets/STM17_CONN_SPL.png"
+              alt="STM17_CONN_SPL"
+              class="rounded"
+            />
+          </div>
+          <div class="col">
+            <div class="card text-white bg-secondary mb-3" style="width: 38rem">
+              <div class="card-body">
+                <h5 class="text-white">
+                  <i class="fa-solid fa-circle-info"></i>&nbsp;Motor Info
+                </h5>
+                <div class="row">
+                  <div class="col-sm-10">
+                    <label for="motorModelAndFirmware">Model & Firmware</label
+                    ><!--MV-->
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="xxx"
+                      readonly
+                    />
+                  </div>
+                  <div class="col-sm">
+                    <label for="motorAdderss">Address</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="0"
+                      readonly
+                    />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-8">
+                    <label for="motorPosition">Position</label
+                    ><!--MV-->
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="0"
+                      readonly
+                    />
+                  </div>
+                  <div class="col-sm">
+                    <label for="motorTemp">Temperture</label>
+                    <div class="input-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="0"
+                        readonly
+                      />
+                      <span class="input-group-text">°C</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-8">
+                    <label for="motorIO">IO</label
+                    ><!--MV-->
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="00000000"
+                      readonly
+                    />
+                  </div>
+                  <div class="col-sm">
+                    <label for="motorVoltage">Voltage</label>
+                    <div class="input-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="0"
+                        readonly
+                      />
+                      <div class="input-group-append">
+                        <span class="input-group-text">V</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm">
+                    <label for="motorAccel">Acceleration</label
+                    ><!--MV-->
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="0"
+                      readonly
+                    />
+                  </div>
+                  <div class="col-sm">
+                    <label for="motorDecel">Deceleration</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="0"
+                      readonly
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="container">
+            <div class="card text-white bg-secondary mb-3" style="width: 38rem">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <i class="fa-brands fa-usb"></i>&nbsp; Serial Connection
+                </h5>
+                <div class="row align-items-end">
+                  <div class="col-auto">
+                    <button id="requestPortBtn" class="btn btn-primary">
+                      Select Port
+                    </button>
+                  </div>
+                  <div class="col-auto">
+                    <select class="form-select" id="baudRateSelect">
+                      <option selected>Select Baud Rate</option>
+                      <option value="9600">9600</option>
+                      <option value="19200">19200</option>
+                      <option value="38400">38400</option>
+                      <option value="57600">57600</option>
+                      <option value="115200">115200</option>
+                    </select>
+                  </div>
+                  <div class="col-auto">
+                    <button class="btn btn-success" id="connectBtn">
+                      Connect
+                    </button>
+                  </div>
+                  <div class="col-auto">
+                    <button class="btn btn-danger" id="disconnectBtn">
+                      Disconnect
+                    </button>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col">
+                    <span class="fw-bold">Port Info:</span>
+                    <span id="selectedPort">Not selected</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card text-white bg-secondary mb-3" style="width: 38rem">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <i class="fa-solid fa-terminal"></i>&nbsp;Serial Terminal
+                </h5>
+                <div class="row mt-3">
+                  <div class="col">
+                    <textarea
+                      id="serialTerminal"
+                      class="form-control"
+                      rows="10"
+                      readonly
+                    ></textarea>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-8">
+                    <div class="input-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="serialMessage"
+                        placeholder="輸入要傳送的訊息"
+                      />
+                      <button class="btn btn-primary" id="sendMessageBtn">
+                        Send
+                      </button>
+                    </div>
+                  </div>
+                  <div class="col-auto">
+                    <button id="clearTerminalBtn" class="btn btn-danger">
+                      Clear Terminal
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="container">
+            <div class="card text-white bg-secondary mb-3">
+              <div class="card-body">
+                <h5 class="card-title">Function</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
