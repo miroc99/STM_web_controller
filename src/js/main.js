@@ -10,11 +10,12 @@ const disconnectBtn = document.getElementById("disconnectBtn");
 const selectedPort = document.getElementById("selectedPort");
 const portInfo = document.getElementById("portInfo");
 const serialTerminal = document.getElementById("serialTerminal");
+const refreshBtn = document.getElementById("refreshButton");
 
 let port;
 let reading = false;
 let reader;
-
+let currentRecvData = "";
 disconnectBtn.disabled = true;
 connectBtn.addEventListener("click", async () => {
   try {
@@ -71,22 +72,34 @@ disconnectBtn.addEventListener("click", async () => {
   }
 });
 
+// 刷新 Motor 資訊
+refreshBtn.addEventListener("click", async () => {
+  getMotorInfo();
+});
+
+document.getElementById("seekHomeBtn").addEventListener("click", seekHome);
+document.getElementById("setZeroBtn").addEventListener("click", async () => {
+  await seekZero();
+  await getMotorInfo();
+});
 document
   .getElementById("sendMessageBtn")
   .addEventListener("click", async () => {
-    const message = document.getElementById("serialMessage").value;
-    sendMessage(message);
+    const messageInput = document.getElementById("serialMessage");
+    sendMessage(messageInput.value, false);
+    messageInput.value = "";
   });
 document
   .getElementById("serialMessage")
   .addEventListener("keypress", async (event) => {
     if (event.key !== "Enter") return;
     event.preventDefault();
-    const message = document.getElementById("serialMessage").value;
-    sendMessage(message);
+    const messageInput = document.getElementById("serialMessage");
+    sendMessage(messageInput.value, false);
+    messageInput.value = "";
   });
 
-async function sendMessage(message) {
+async function sendMessage(message, waitResponse = false) {
   if (port && port.writable) {
     const writer = port.writable.getWriter();
     const encoder = new TextEncoder();
@@ -105,8 +118,28 @@ async function sendMessage(message) {
     alert("請先連接序列埠");
   }
   console.log("發送訊息:", message);
+  // printToSerialTerminal(message, false);
+  if (waitResponse) return await waitForResponse();
 }
+function waitForResponse(timeout = 2000) {
+  return new Promise((resolve, reject) => {
+    let startTime = Date.now();
 
+    function checkResponse() {
+      if (currentRecvData) {
+        let response = currentRecvData;
+        currentRecvData = ""; // 清空以準備接收下一個回應
+        resolve(response);
+      } else if (Date.now() - startTime > timeout) {
+        reject(new Error("等待回應超時"));
+      } else {
+        setTimeout(checkResponse, 100); // 每 100ms 檢查一次
+      }
+    }
+
+    checkResponse();
+  });
+}
 function getReadableVIDPIDString() {
   return `VID=${getVID()} PID=${getPID()}`;
 }
@@ -117,9 +150,11 @@ function getPID() {
   return `${port.getInfo().usbProductId.toString(16).toUpperCase()}`;
 }
 
-// 模拟接收串口数据并显示在终端
-function receiveSerialData(data) {
-  serialTerminal.value += data + "\n";
+// 模擬接收序列埠資料
+function printToSerialTerminal(data, isRecv = true) {
+  serialTerminal.value = serialTerminal.value.slice(0, -1); // 移除最後一個換行符
+  currentRecvData += data.trim(); // 累積回應
+  serialTerminal.value += data + "\r";
   serialTerminal.scrollTop = serialTerminal.scrollHeight;
 }
 
@@ -132,7 +167,7 @@ document
 
 async function startRead() {
   if (!port || !port.readable) {
-    console.error("串口不可读取");
+    console.error("序列埠不可讀取");
     return;
   }
 
@@ -144,19 +179,19 @@ async function startRead() {
       try {
         const { value, done } = await reader.read();
         if (done) {
-          console.log("串口读取完成");
+          console.log("序列埠讀取完成");
           break;
         }
         const decodedData = decoder.decode(value);
-        receiveSerialData(decodedData);
+        console.log("接收資料:", decodedData);
+        printToSerialTerminal(decodedData);
       } catch (error) {
-        console.error("读取串口数据时出错:", error);
-        // 等待一段时间后重试
+        console.error("讀取序列埠時出錯:", error);
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
     }
   } catch (error) {
-    console.error("串口读取过程中发生严重错误:", error);
+    console.error("序列埠讀取過程中發生嚴重錯誤:", error);
   } finally {
     reader.releaseLock();
     console.log("end");
@@ -172,4 +207,81 @@ function getDeviceName(port) {
   const product = vendor.devices[usbProductId.toString(16).padStart(4, "0")];
   console.debug("getDeviceName", product ? product.name : undefined);
   return product ? product.devname : undefined;
+}
+
+function seekHome() {
+  sendMessage("SH3F", false);
+}
+async function seekZero() {
+  await sendMessage("EP0", false);
+  await sendMessage("SP0", false);
+}
+// Motor Function
+async function getMotorInfo() {
+  try {
+    let response;
+
+    response = await sendMessage("RV", true);
+    document.getElementById("motorModelAndFirmware").value =
+      extractValue(response);
+    console.log("馬達型號與韌體:", response);
+
+    response = await sendMessage("DA", true);
+    document.getElementById("motorAddress").value = extractValue(response);
+    console.log("馬達地址:", response);
+
+    response = await sendMessage("SP", true);
+    document.getElementById("motorPosition").value = extractValue(response);
+    console.log("馬達位置:", response);
+
+    response = await sendMessage("IT", true);
+    document.getElementById("motorTemp").value = extractValue(response) / 10;
+    console.log("馬達溫度:", response);
+
+    response = await sendMessage("IS", true);
+    document.getElementById("motorIO").value = extractValue(response);
+    console.log("馬達 I/O:", response);
+
+    response = await sendMessage("IU", true);
+    document.getElementById("motorVoltage").value = extractValue(response) / 10;
+    console.log("馬達電壓:", response);
+
+    response = await sendMessage("JS", true);
+    document.getElementById("motorJogSpeed").value = extractValue(response);
+    console.log("馬達 Jog 速度:", response);
+
+    response = await sendMessage("JA", true);
+    document.getElementById("motorJogAccel").value = extractValue(response);
+    console.log("馬達 Jog 加速度:", response);
+
+    response = await sendMessage("JL", true);
+    document.getElementById("motorJogDecel").value = extractValue(response);
+    console.log("馬達 Jog 減速度:", response);
+
+    response = await sendMessage("VE", true);
+    document.getElementById("motorMoveSpeed").value = extractValue(response);
+    console.log("馬達移動速度:", response);
+
+    response = await sendMessage("AC", true);
+    document.getElementById("motorMoveAccel").value = extractValue(response);
+    console.log("馬達移動加速度:", response);
+
+    response = await sendMessage("DE", true);
+    document.getElementById("motorMoveDecel").value = extractValue(response);
+    console.log("馬達移動減速度:", response);
+
+    response = await sendMessage("DI", true);
+    document.getElementById("motorMoveDirection").value =
+      extractValue(response);
+    console.log("馬達方向:", response);
+  } catch (error) {
+    console.error("獲取馬達資訊時發生錯誤:", error);
+    alert("獲取馬達資訊失敗: " + error.message);
+  }
+}
+
+// 取 "=" 之後的值
+function extractValue(data) {
+  const parts = data.split("=");
+  return parts.length > 1 ? parts[1].trim() : data.trim();
 }
