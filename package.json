@@ -1,15 +1,20 @@
 {
   "name": "stm_web_controller",
+  "private": true,
   "version": "1.0.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "vite"
+    "start": "vite",
+    "build": "vite build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d src/dist"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "gh-pages": "^6.3.0",
     "sass": "^1.79.3",
     "vite": "^5.4.8"
   },
