@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Motor Control</title>
+    <script
+      src="https://kit.fontawesome.com/e28865f407.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #343a40;
+        padding: 20px;
+      }
+      .container {
+        max-width: 1400px;
+      }
+      .card {
+        margin-bottom: 20px;
+      }
+    </style>
+    <script type="module" crossorigin src="/STM_web_controller/assets/index-DxobwHG6.js"></script>
+    <link rel="stylesheet" crossorigin href="/STM_web_controller/assets/index-DbV7lSOA.css">
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+
+      <div class="container">
+        <h1 class="text-white">
+          STM Motor Controller
+          <img
+            src="/STM_web_controller/assets/STM17_CONN_SPL-BcjPdHR5.png"
+            alt="STM17_CONN_SPL"
+            class="rounded"
+            width="10%"
+          />
+        </h1>
+
+        <div class="row">
+          <!-- Left Column: Motor Info and Function -->
+          <div class="col-md-6">
+            <!-- Motor Info Card -->
+            <div class="card text-white bg-secondary mb-3">
+              <div class="card-body">
+                <h5
+                  class="text-white"
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                  "
+                >
+                  <span>
+                    <i class="fa-solid fa-circle-info"></i>&nbsp;Motor Info
+                  </span>
+                  <button id="refreshButton" class="btn btn-primary">
+                    Refresh
+                  </button>
+                </h5>
+
+                <!-- Model & Address -->
+                <div class="row mb-3">
+                  <div class="col-sm-10">
+                    <label for="motorModelAndFirmware">Model & Firmware</label>
+                    <input
+                      id="motorModelAndFirmware"
+                      type="text"
+                      class="form-control"
+                      placeholder="xxx"
+                      readonly
+                    />
+                  </div>
+                  <div class="col-sm">
+                    <label for="motorAddress">Address</label>
+                    <input
+                      id="motorAddress"
+                      type="text"
+                      class="form-control"
+                      placeholder="0"
+                      readonly
+                    />
+                  </div>
+                </div>
+
+                <!-- Position & Temperature -->
+                <div class="row mb-3">
+                  <div class="col-sm-8">
+                    <label for="motorPosition">Position</label>
+                    <input
+                      id="motorPosition"
+                      type="text"
+                      class="form-control"
+                      placeholder="0"
+                      readonly
+                    />
+                  </div>
+                  <div class="col-sm">
+                    <label for="motorTemp">Temperature</label>
+                    <div class="input-group">
+                      <input
+                        id="motorTemp"
+                        type="text"
+                        class="form-control"
+                        placeholder="0"
+                        readonly
+                      />
+                      <span class="input-group-text">°C</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- IO & Voltage -->
+                <div class="row mb-3">
+                  <div class="col-sm-8">
+                    <label for="motorIO"
+                      >Input State (LimitSwitch is connect to 6th bit)</label
+                    >
+                    <input
+                      id="motorIO"
+                      type="text"
+                      class="form-control"
+                      placeholder="00000000"
+                      readonly
+                    />
+                  </div>
+                  <div class="col-sm">
+                    <label for="motorVoltage">Voltage</label>
+                    <div class="input-group">
+                      <input
+                        id="motorVoltage"
+                        type="text"
+                        class="form-control"
+                        placeholder="0"
+                        readonly
+                      />
+                      <span class="input-group-text">V</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Jog Parameters -->
+                <div class="row mb-3">
+                  <div class="col-sm">
+                    <label for="motorJogSpeed">Speed(Jog)</label>
+                    <input
+                      id="motorJogSpeed"
+                      type="text"
+                      class="form-control"
+                      placeholder="0"
+                      readonly
+                    />
+                  </div>
+                  <div class="col-sm">
+                    <label for="motorJogAccel">Acceleration(Jog)</label>
+                    <input
+                      id="motorJogAccel"
+                      type="text"
+                      class="form-control"
+                      placeholder="0"
+                      readonly
+                    />
+                  </div>
+                  <div class="col-sm">
+                    <label for="motorJogDecel">Deceleration(Jog)</label>
+                    <input
+                      id="motorJogDecel"
+                      type="text"
+                      class="form-control"
+                      placeholder="0"
+                      readonly
+                    />
+                  </div>
+                </div>
+
+                <!-- Move Parameters -->
+                <div class="row mb-3">
+                  <div class="col-sm">
+                    <label for="motorMoveSpeed">Speed(Move)</label>
+                    <input
+                      id="motorMoveSpeed"
+                      type="text"
+                      class="form-control"
+                      placeholder="0"
+                      readonly
+                    />
+                  </div>
+                  <div class="col-sm">
+                    <label for="motorMoveAccel">Acceleration(Move)</label>
+                    <input
+                      id="motorMoveAccel"
+                      type="text"
+                      class="form-control"
+                      placeholder="0"
+                      readonly
+                    />
+                  </div>
+                  <div class="col-sm">
+                    <label for="motorMoveDecel">Deceleration(Move)</label>
+                    <input
+                      id="motorMoveDecel"
+                      type="text"
+                      class="form-control"
+                      placeholder="0"
+                      readonly
+                    />
+                  </div>
+                </div>
+
+                <!-- Move Direction -->
+                <div class="row">
+                  <div class="col-sm">
+                    <label for="motorMoveDirection"
+                      >Move Direction (Usually Negative is CCW)</label
+                    >
+                    <input
+                      id="motorMoveDirection"
+                      type="text"
+                      class="form-control"
+                      placeholder="0"
+                      readonly
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Function Card -->
+            <div class="card text-white bg-secondary mb-3">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <i class="fa-solid fa-gear"></i>&nbsp;Function
+                </h5>
+                <div class="row mb-3">
+                  <div class="col">
+                    <button
+                      id="seekHomeBtn"
+                      class="btn btn-primary"
+                      style="width: 100%"
+                    >
+                      Seek Home (Zero to LimitSwitch)
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      id="setZeroBtn"
+                      class="btn btn-dark"
+                      style="width: 100%"
+                    >
+                      Set Zero (Current Position to Zero)
+                    </button>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col">
+                    <button
+                      id="SetCWBtn"
+                      class="btn btn-primary btn-sm"
+                      style="width: 100%"
+                    >
+                      CW
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      id="SetCCWBtn"
+                      class="btn btn-primary btn-sm"
+                      style="width: 100%"
+                    >
+                      CCW
+                    </button>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-8">
+                    <div class="input-group input-group-sm mb-3">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="setJogSpeedInput"
+                        placeholder="Set Jog Speed"
+                      />
+                      <button class="btn btn-primary" id="sendMessageBtn">
+                        Set
+                      </button>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <button
+                      id="JogCWBtn"
+                      class="btn btn-success btn-sm"
+                      style="width: 100%"
+                    >
+                      Jog CW
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-4">
+                    <div class="input-group input-group-sm mb-3">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="setMoveSpeedInput"
+                        placeholder="Set Move Speed"
+                      />
+                      <button class="btn btn-primary" id="sendMessageBtn">
+                        Set
+                      </button>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="input-group input-group-sm mb-3">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="setMoveSpeedInput"
+                        placeholder="Move Distance"
+                      />
+                    </div>
+                  </div>
+                  <div class="col">
+                    <button
+                      id="MoveBtn"
+                      class="btn btn-success btn-sm"
+                      style="width: 100%"
+                    >
+                      Move
+                    </button>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col">
+                    <button
+                      id="stopJogBtn"
+                      class="btn btn-warning"
+                      style="width: 100%"
+                    >
+                      Stop Jog
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      id="StopBtn"
+                      class="btn btn-danger"
+                      style="width: 100%"
+                    >
+                      Stop
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      id="StopKillBtn"
+                      class="btn btn-danger"
+                      style="width: 100%"
+                    >
+                      Stop & Kill
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Serial Connection and Terminal -->
+          <div class="col-md-6">
+            <!-- Serial Connection Card -->
+            <div class="card text-white bg-secondary mb-3">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <i class="fa-brands fa-usb"></i>&nbsp;Serial Connection
+                </h5>
+                <div class="row align-items-end">
+                  <div class="col-auto">
+                    <button id="requestPortBtn" class="btn btn-primary">
+                      Select Port
+                    </button>
+                  </div>
+                  <div class="col-auto">
+                    <select class="form-select" id="baudRateSelect">
+                      <option selected>Select Baud Rate</option>
+                      <option value="9600">9600</option>
+                      <option value="19200">19200</option>
+                      <option value="38400">38400</option>
+                      <option value="57600">57600</option>
+                      <option value="115200">115200</option>
+                    </select>
+                  </div>
+                  <div class="col-auto">
+                    <button class="btn btn-success" id="connectBtn">
+                      Connect
+                    </button>
+                  </div>
+                  <div class="col-auto">
+                    <button class="btn btn-danger" id="disconnectBtn">
+                      Disconnect
+                    </button>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col">
+                    <span class="fw-bold">Port Info:</span>
+                    <span id="selectedPort">Not selected</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Serial Terminal -->
+            <div class="card text-white bg-secondary mb-3">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <i class="fa-solid fa-terminal"></i>&nbsp;Serial Terminal
+                </h5>
+                <div class="row mt-3">
+                  <div class="col">
+                    <textarea
+                      id="serialTerminal"
+                      class="form-control"
+                      rows="10"
+                      readonly
+                    ></textarea>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-8">
+                    <div class="input-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="serialMessage"
+                        placeholder="Enter message to send"
+                      />
+                      <button class="btn btn-primary" id="sendMessageBtn">
+                        Send
+                      </button>
+                    </div>
+                  </div>
+                  <div class="col-auto">
+                    <button id="clearTerminalBtn" class="btn btn-danger">
+                      Clear Terminal
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
