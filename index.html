@@ -28,7 +28,7 @@
         margin-bottom: 20px;
       }
     </style>
-    <script type="module" crossorigin src="/STM_web_controller/assets/index-DxobwHG6.js"></script>
+    <script type="module" crossorigin src="/STM_web_controller/assets/index-D4BRx3_K.js"></script>
     <link rel="stylesheet" crossorigin href="/STM_web_controller/assets/index-DbV7lSOA.css">
   </head>
   <body>
@@ -263,20 +263,20 @@
                 <div class="row mb-3">
                   <div class="col">
                     <button
-                      id="SetCWBtn"
+                      id="setCWBtn"
                       class="btn btn-primary btn-sm"
                       style="width: 100%"
                     >
-                      CW
+                      ↻ CW
                     </button>
                   </div>
                   <div class="col">
                     <button
-                      id="SetCCWBtn"
+                      id="setCCWBtn"
                       class="btn btn-primary btn-sm"
                       style="width: 100%"
                     >
-                      CCW
+                      ↺ CCW
                     </button>
                   </div>
                 </div>
@@ -286,21 +286,21 @@
                       <input
                         type="text"
                         class="form-control"
-                        id="setJogSpeedInput"
+                        id="jogSpeedInput"
                         placeholder="Set Jog Speed"
                       />
-                      <button class="btn btn-primary" id="sendMessageBtn">
+                      <button class="btn btn-primary" id="setJogSpeedBtn">
                         Set
                       </button>
                     </div>
                   </div>
                   <div class="col">
                     <button
-                      id="JogCWBtn"
+                      id="startJogBtn"
                       class="btn btn-success btn-sm"
                       style="width: 100%"
                     >
-                      Jog CW
+                      Jog
                     </button>
                   </div>
                 </div>
@@ -311,10 +311,10 @@
                       <input
                         type="text"
                         class="form-control"
-                        id="setMoveSpeedInput"
+                        id="moveSpeedInput"
                         placeholder="Set Move Speed"
                       />
-                      <button class="btn btn-primary" id="sendMessageBtn">
+                      <button class="btn btn-primary" id="moveSpeedBtn">
                         Set
                       </button>
                     </div>
@@ -324,14 +324,14 @@
                       <input
                         type="text"
                         class="form-control"
-                        id="setMoveSpeedInput"
+                        id="moveDistanceInput"
                         placeholder="Move Distance"
                       />
                     </div>
                   </div>
                   <div class="col">
                     <button
-                      id="MoveBtn"
+                      id="moveBtn"
                       class="btn btn-success btn-sm"
                       style="width: 100%"
                     >
@@ -351,7 +351,7 @@
                   </div>
                   <div class="col">
                     <button
-                      id="StopBtn"
+                      id="stopBtn"
                       class="btn btn-danger"
                       style="width: 100%"
                     >
@@ -360,7 +360,7 @@
                   </div>
                   <div class="col">
                     <button
-                      id="StopKillBtn"
+                      id="stopKillBtn"
                       class="btn btn-danger"
                       style="width: 100%"
                     >
@@ -439,7 +439,7 @@
                         type="text"
                         class="form-control"
                         id="serialMessage"
-                        placeholder="Enter message to send"
+                        placeholder="Enter command to send"
                       />
                       <button class="btn btn-primary" id="sendMessageBtn">
                         Send
@@ -449,6 +449,69 @@
                   <div class="col-auto">
                     <button id="clearTerminalBtn" class="btn btn-danger">
                       Clear Terminal
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card text-white bg-secondary mb-3">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <i class="fa-solid fa-gear"></i>&nbsp;Advanced Function
+                </h5>
+                <div class="row mb-3">
+                  <div class="col-auto">
+                    <select class="form-select" id="idSelect">
+                      <option selected>Select ID</option>
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="!">!</option>
+                      <option value='"'>&quot;</option>
+                      <option value="#">#</option>
+                      <option value="$">$</option>
+                      <option value="%">%</option>
+                      <option value="&amp;">&amp;</option>
+                      <option value="'">'</option>
+                      <option value="(">(</option>
+                      <option value=")">)</option>
+                      <option value="*">*</option>
+                      <option value="+">+</option>
+                      <option value=",">,</option>
+                      <option value="-">-</option>
+                      <option value=".">.</option>
+                      <option value="/">/</option>
+                      <option value=":">:</option>
+                      <option value="&lt;">&lt;</option>
+                      <option value="=">=</option>
+                      <option value="&gt;">&gt;</option>
+                      <option value="?">?</option>
+                      <option value="@">@</option>
+                    </select>
+                  </div>
+                  <div class="col-auto">
+                    <button
+                      id="setIDBtn"
+                      class="btn btn-primary"
+                      style="width: 100%"
+                    >
+                      Set ID
+                    </button>
+                  </div>
+                  <div class="col">
+                    <button
+                      id="clearErrorBtn"
+                      class="btn btn-danger"
+                      style="width: 100%"
+                    >
+                      Clear Error (Red LED flashing)
                     </button>
                   </div>
                 </div>
